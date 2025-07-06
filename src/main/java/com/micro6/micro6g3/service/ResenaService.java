@@ -22,10 +22,11 @@ public class ResenaService {
         return resenaRepository.findAll();
     }
 
-    public Resena dejarResena(UUID idProducto, UUID idUsuario, String comentario, int calificacion) {
+    public Resena dejarResena(UUID idProducto, String idUsuario, int idTienda, String comentario, int calificacion) {
         Resena resena = new Resena();
         resena.setIdProducto(idProducto);
         resena.setIdUsuario(idUsuario);
+        resena.setIdTienda(idTienda);
         resena.setComentario(comentario);
         resena.setCalificacion(calificacion);
         resena.setFechaResena(LocalDateTime.now());
@@ -53,5 +54,4 @@ public class ResenaService {
         }
         return false;
     }
-
 }

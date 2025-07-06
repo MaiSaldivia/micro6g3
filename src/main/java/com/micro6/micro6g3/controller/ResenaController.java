@@ -4,14 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.micro6.micro6g3.model.Resena;
 import com.micro6.micro6g3.service.ResenaService;
@@ -30,8 +23,8 @@ public class ResenaController {
     public ResponseEntity<List<Resena>> listarResenas() {
         List<Resena> resenas = resenaService.listarTodas();
         return resenas.isEmpty() ?
-            ResponseEntity.noContent().build() :
-            ResponseEntity.ok(resenas);
+                ResponseEntity.noContent().build() :
+                ResponseEntity.ok(resenas);
     }
 
     @GetMapping("/{idProducto}")
@@ -41,16 +34,17 @@ public class ResenaController {
 
     @PostMapping
     public ResponseEntity<Resena> crearResena(@RequestBody Resena resena) {
-        if (resena.getIdProducto() == null || resena.getIdUsuario() == null) {
+        if (resena.getIdProducto() == null || resena.getIdUsuario() == null || resena.getIdTienda() == 0) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(
-            resenaService.dejarResena(
-                resena.getIdProducto(),
-                resena.getIdUsuario(),
-                resena.getComentario(),
-                resena.getCalificacion()
-            )
+                resenaService.dejarResena(
+                        resena.getIdProducto(),
+                        resena.getIdUsuario(),
+                        resena.getIdTienda(),
+                        resena.getComentario(),
+                        resena.getCalificacion()
+                )
         );
     }
 
@@ -61,17 +55,15 @@ public class ResenaController {
 
         Resena resena = resenaService.actualizarResena(idResena, resenaActualizada);
         return resena != null
-            ? ResponseEntity.ok(resena)
-            : ResponseEntity.notFound().build();
+                ? ResponseEntity.ok(resena)
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{idResena}")
     public ResponseEntity<Void> eliminarResena(@PathVariable UUID idResena) {
         boolean eliminada = resenaService.eliminarResena(idResena);
         return eliminada
-            ? ResponseEntity.noContent().build()
-            : ResponseEntity.notFound().build();
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
-
 }
-

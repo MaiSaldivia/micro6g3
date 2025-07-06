@@ -26,8 +26,11 @@ public class Resena {
     @Column(nullable = false)
     private UUID idProducto;
 
-    @Column(nullable = false)
-    private UUID idUsuario;
+    @Column(nullable = false, length = 13)
+    private String idUsuario;
+    
+    @Column(nullable = false, length = 10)
+    private int idTienda;
 
     private String comentario;
 

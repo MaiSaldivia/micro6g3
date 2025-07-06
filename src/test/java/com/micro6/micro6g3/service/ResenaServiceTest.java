@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,23 +34,26 @@ class ResenaServiceTest {
     @Test
     void testDejarResena() {
         UUID idProducto = UUID.randomUUID();
-        UUID idUsuario = UUID.randomUUID();
+        String idUsuario = "USR1234567890";
+        int idTienda = 101;
         String comentario = "Excelente servicio";
         int calificacion = 5;
 
         Resena resenaGuardada = new Resena();
         resenaGuardada.setIdProducto(idProducto);
         resenaGuardada.setIdUsuario(idUsuario);
+        resenaGuardada.setIdTienda(idTienda);
         resenaGuardada.setComentario(comentario);
         resenaGuardada.setCalificacion(calificacion);
         resenaGuardada.setFechaResena(LocalDateTime.now());
 
         when(resenaRepository.save(any(Resena.class))).thenReturn(resenaGuardada);
 
-        Resena resultado = resenaService.dejarResena(idProducto, idUsuario, comentario, calificacion);
+        Resena resultado = resenaService.dejarResena(idProducto, idUsuario, idTienda, comentario, calificacion);
 
         assertThat(resultado.getComentario()).isEqualTo("Excelente servicio");
         assertThat(resultado.getCalificacion()).isEqualTo(5);
+        assertThat(resultado.getIdTienda()).isEqualTo(idTienda);
         verify(resenaRepository).save(any(Resena.class));
     }
 
